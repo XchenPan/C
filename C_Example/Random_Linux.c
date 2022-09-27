@@ -8,11 +8,10 @@
 #include <unistd.h>
 #include <stdlib.h>
 
-int true_random()
+char true_random()
 {
-    int random_num, fd, nread;
+    char random_num, fd, nread;
     fd = open("/dev/random", O_RDONLY);
-    return fd;
     if(fd < -1)
         return -1;
     nread = read(fd, &random_num, sizeof(random_num));
@@ -21,11 +20,15 @@ int true_random()
     close(fd);
     if(random_num < 0)
         random_num = -random_num;
-    return random_num;
+    if(random_num <= 1000)
+        return random_num;
+    else
+        return true_random();
 }
 void main()
 {
     int n;
     n = true_random();
-    printf("%d\n",n);
+
+    printf("n = %d\n",n);
 }
