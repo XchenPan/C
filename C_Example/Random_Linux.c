@@ -7,6 +7,7 @@
 #include <errno.h>
 #include <unistd.h>
 #include <stdlib.h>
+#include<time.h>
 
 char true_random()
 {
@@ -20,15 +21,17 @@ char true_random()
     close(fd);
     if(random_num < 0)
         random_num = -random_num;
-    if(random_num <= 1000)
-        return random_num;
-    else
-        return true_random();
+    return random_num;
 }
 void main()
 {
-    int n;
+    int m, n;
+    srand((unsigned int)time(NULL));
     n = true_random();
-
-    printf("n = %d\n",n);
+    for(int i = 0; i < 5; i++){
+        n = true_random();
+        printf("n = %d %c\n",n,(char)n);
+    }
+    printf("%d\n", m = rand()%101+100);
+    //printf("n = %d %c\n",n,(char)n);
 }
