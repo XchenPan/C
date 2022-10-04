@@ -93,8 +93,8 @@ void SL_Append(SepList* slist, int x)
 {
     if(slist->length == slist->capacity)//元素满了，需要先扩容
         SL_resize(slist, slist->capacity + slist->capacity*0.1);
-    //xxxx
-
+    slist->data[slist->length] = x;
+    ++slist->length;
 }
 
 //在顺序表的位置i插入结点x,插入d[i]之前
@@ -177,8 +177,17 @@ void SL_output(SepList* slist)
 void main()
 {
     SepList* slist = SL_create(MAX);
+    int m, n, i, x;
+    scanf("%d",&n);
+    SL_Input(slist, n);
+    scanf("%d %d",&i,&x);
+    SL_InsertAt(slist, i, x);
+    scanf("%d",&m);
+    SL_Append(slist, m);
+    SL_output(slist);
+    SL_DeleteValue(slist, 3);
+    SL_output(slist);
 }
-
 
 
 
