@@ -91,7 +91,7 @@ void SL_SetAt(SepList* slist, int i, int x)
 //追加元素在顺序表表尾
 void SL_Append(SepList* slist, int x)
 {
-    if(slist->length == slist->capacity)
+    if(slist->length == slist->capacity)//元素满了，需要先扩容
         SL_resize(slist, slist->capacity + slist->capacity*0.1);
     //xxxx
 
@@ -101,17 +101,21 @@ void SL_Append(SepList* slist, int x)
 //i的有效范围[0,slist->length]
 void SL_InsertAt(SepList* slist, int i, int x)
 {
-    //xxxx
+    int j;
+    for( j = slist->length; j >= i; j--)
+        slist->data[j] = slist->data[j - 1];
+    slist->data[i] = x;
+    ++slist->length;
 }
 
 //删除顺序表slist的第i号结点
-//i的有效范围[0,slist->length]内，否则会产生异常或错误
+//i的有效范围[0,slist->length)内，否则会产生异常或错误
 //返回被删除的数据元素的值
 int SL_DeleteAt(SepList* slist, int i)
 {
     int j, t;
     t = slist->data[i];
-    if(i < 0 || i >=slist->length)
+    if(i < 0 || i > slist->length)
         return 0;
     else
         for(j =i; j <= slist->length; j++)
@@ -124,14 +128,34 @@ int SL_DeleteAt(SepList* slist, int i)
 //返回值大于等于0时表示找到值为x的结点的编号，-1表示没有找到
 int SL_FindValue(SepList* slist, int x)
 {
-    /////
+    int i, t;
+    for(i = 0; i < slist->length; i++){
+        if(slist->data[i] == x){
+            t = i;break;
+        }
+        else
+            t = -1;
+    }
+    return t;
 }
 
 //删除第一个值为x的结点，
-//存在值为x的结点则返回结点编号，为找到返回-1
+//存在值为x的结点则返回结点编号，未找到返回-1
 int SL_DeleteValue(SepList* slist, int x)
 {
-
+    int i, j, t;
+    for(i = 0; i < slist->length; i++){
+        if(slist->data[i] == x){
+            t = i;
+            break;
+        }
+        else
+            t = -1;
+    }
+    for(j = t; j <= slist->length; j++)
+            slist->data[j] = slist->data[j+1];
+    --slist->length;
+    return t;
 }
 
 //打印整个顺序表
@@ -153,11 +177,6 @@ void SL_output(SepList* slist)
 void main()
 {
     SepList* slist = SL_create(MAX);
-    int n, m;
-	printf("请输入数据元素的个数：\n");
-	scanf("%d",&n);
-	printf("请向顺序表中输入元素：\n");
-    SL_Input(slist, n);
 }
 
 
