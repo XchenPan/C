@@ -2,7 +2,9 @@
 #include<stdlib.h>
 #include <stdbool.h>
 #include<memory.h>
-#define MAX 100
+#include <time.h>
+#include <assert.h>
+#define MAX 110
 
 typedef struct 
 {
@@ -27,6 +29,16 @@ void SL_Free(SepList* slist)
     free(slist->data);
     free(slist);
 }
+
+//扩容
+void Inc(SepList* slist)
+{
+    assert(slist->data != NULL);
+    slist->data = (int*)realloc(slist->data , slist->capacity * 2 * sizeof(int));//(内存块泄露)
+    assert(slist->data != NULL);
+    slist->capacity *= 2;
+}
+
 void SL_resize(SepList* slist, int size)
 {
     slist->capacity = size;
@@ -92,7 +104,7 @@ void SL_SetAt(SepList* slist, int i, int x)
 void SL_Append(SepList* slist, int x)
 {
     if(slist->length == slist->capacity)//元素满了，需要先扩容
-        SL_resize(slist, slist->capacity + slist->capacity*0.1);
+        Inc(slist);
     slist->data[slist->length] = x;
     ++slist->length;
 }
@@ -186,31 +198,74 @@ void SL_output(SepList* slist)
     printf("\n");
 }
 
+//拓展-随机数存入顺序表
+//
+//随机生成 100 个整数存入一个顺序表,整数范围在[100,200)之间,然后去掉其
+//中的重复元素(重复的仅保留第一个),最后输出表中所有元素。
+void SL_Random_2(SepList* slist)
+{
+    srand((int)time(NULL));
+    for(int i =0; i < 100; i++)
+    {
+        slist->data[i] = rand() % 100 + 100;
+        slist->length++;
+    }
+    SL_output(slist);
+    for(int j = 0; j < slist->length; j++)
+        for(int k = j + 1,t = slist->length; k < t; k++)
+            if(slist->data[j] == slist->data[k])
+                SL_DeleteAt(slist, k);
+    SL_output(slist);
+}
+
+//随机生成 20 个整数存入一个顺序表,整数范围在[1,200)之间,然后在第一个素
+//数后插入 1 个 0,第二个素数后插入 2 个 0,以此类推,最后输出表中所有元素。
+void SL_Random_3(SepList* slist)
+{
+    srand((int)time(NULL));
+    for(int i = 0; i < 20 ; i++)
+    {
+        slist->data[i] = rand() % 200 + 1;
+        slist->length++;
+    }       
+    for(int j = 0,n = 2; j < 230;  j = j + n++)                 //n+n*(n+1)/2
+        for(int k = 0, l = j + 1; k < n - 1; k++,l++)
+        {
+            SL_InsertAt(slist, l, 0);
+            if(slist->length == slist->capacity)//元素满了，需要先扩容
+                Inc(slist);
+        }
+    SL_output(slist);
+}
+
 void main()
 {
     SepList* slist = SL_create(MAX);
-    int a, b, c, d, e, f;
-    printf("请输入数据元素的个数：\n");
-	scanf("%d",&a);
-	printf("请向顺序表中输入元素：\n");
-    SL_Input(slist, a);
-    printf("最初的顺序表：\n");
-    SL_output(slist);
-    printf("请输入需要插入的位置和元素：\n");
-    scanf("%d %d", &b, &c);
-    SL_InsertAt(slist, b, c);
-    printf("插入元素后顺序表：\n");
-    SL_output(slist);
-    printf("请输入需要追加的元素：\n");
-    scanf("%d", &d);
-    SL_Append(slist, d);
-    printf("追加%d后的顺序表：\n", d);
-    SL_output(slist);
-    printf("请输入需要删除的元素：\n");
-    scanf("%d", &e);
-    SL_DeleteValue(slist, e);
-    printf("删除的元素后的顺序表：\n");
-    SL_output(slist);
+    // int a, b, c, d, e, f;
+    // printf("请输入数据元素的个数：\n");
+	// scanf("%d",&a);
+	// printf("请向顺序表中输入元素：\n");
+    // SL_Input(slist, a);
+    // printf("最初的顺序表：\n");
+    // SL_output(slist);
+    // printf("请输入需要插入的位置和元素：\n");
+    // scanf("%d %d", &b, &c);
+    // SL_InsertAt(slist, b, c);
+    // printf("插入元素后顺序表：\n");
+    // SL_output(slist);
+    // printf("请输入需要追加的元素：\n");
+    // scanf("%d", &d);
+    // SL_Append(slist, d);
+    // printf("追加%d后的顺序表：\n", d);
+    // SL_output(slist);
+    // printf("请输入需要删除的元素：\n");
+    // scanf("%d", &e);
+    // SL_DeleteValue(slist, e);
+    // printf("删除的元素后的顺序表：\n");
+    // SL_output(slist);
+
+    // SL_Random_2(slist);                 //拓展（2）
+    // SL_Random_3(slist);                 //拓展（3）
 }
 //测试结果
 // 请输入数据元素的个数：
