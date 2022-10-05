@@ -158,6 +158,18 @@ int SL_DeleteValue(SepList* slist, int x)
     return t;
 }
 
+//给顺序表输入初始元素
+void SL_Input(SepList* slist, int n)
+{
+    int i, j;
+ 	for(i = 0; i < n; i++)
+ 	{
+ 		scanf("%d",&j);
+ 		slist->data[i]=j;
+	 }
+	 slist->length = n;
+}
+
 //打印整个顺序表
 void SL_output(SepList* slist)
 {
@@ -177,41 +189,45 @@ void SL_output(SepList* slist)
 void main()
 {
     SepList* slist = SL_create(MAX);
-    int m, n, i, x;
-    scanf("%d",&n);
-    SL_Input(slist, n);
-    scanf("%d %d",&i,&x);
-    SL_InsertAt(slist, i, x);
-    scanf("%d",&m);
-    SL_Append(slist, m);
+    int a, b, c, d, e, f;
+    printf("请输入数据元素的个数：\n");
+	scanf("%d",&a);
+	printf("请向顺序表中输入元素：\n");
+    SL_Input(slist, a);
+    printf("最初的顺序表：\n");
     SL_output(slist);
-    SL_DeleteValue(slist, 3);
+    printf("请输入需要插入的位置和元素：\n");
+    scanf("%d %d", &b, &c);
+    SL_InsertAt(slist, b, c);
+    printf("插入元素后顺序表：\n");
+    SL_output(slist);
+    printf("请输入需要追加的元素：\n");
+    scanf("%d", &d);
+    SL_Append(slist, d);
+    printf("追加%d后的顺序表：\n", d);
+    SL_output(slist);
+    printf("请输入需要删除的元素：\n");
+    scanf("%d", &e);
+    SL_DeleteValue(slist, e);
+    printf("删除的元素后的顺序表：\n");
     SL_output(slist);
 }
-
-
-
-
-
-//逆置
-void ReverseList(SepList* slist)
-{
-    int temp;
-    for(int i = 0; i < slist->length / 2; i++)
-    {
-        temp = slist->data[i];
-        slist->data[i] = slist->data[slist->length - 1 - i];
-        slist->data[slist->length - 1 - i] = temp;
-    }
-}
-//输入元素
-void SL_Input(SepList* slist, int n)
-{
-    int i, j;
- 	for(i = 0; i < n; i++)
- 	{
- 		scanf("%d",&j);
- 		slist->data[i]=j;
-	 }
-	 slist->length = n;
-}
+//测试结果
+// 请输入数据元素的个数：
+// 4
+// 请向顺序表中输入元素：
+// 1 2 3 4
+// 最初的顺序表：
+// 1 2 3 4 
+// 请输入需要插入的位置和元素：
+// 0 0
+// 插入元素后顺序表：
+// 0 1 2 3 4 
+// 请输入需要追加的元素：
+// 5
+// 追加5后的顺序表：
+// 0 1 2 3 4 5 
+// 请输入需要删除的元素：
+// 0
+// 删除的元素后的顺序表：
+// 1 2 3 4 5 
