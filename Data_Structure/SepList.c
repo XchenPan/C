@@ -31,7 +31,7 @@ void SL_Free(SepList* slist)
 }
 
 //扩容
-void Inc(SepList* slist)
+void SL_resize(SepList* slist)
 {
     assert(slist->data != NULL);
     slist->data = (int*)realloc(slist->data , slist->capacity * 2 * sizeof(int));//(内存块泄露)
@@ -39,7 +39,7 @@ void Inc(SepList* slist)
     slist->capacity *= 2;
 }
 
-void SL_resize(SepList* slist, int size)
+void SL_resize_N(SepList* slist, int size)
 {
     slist->capacity = size;
     int* newdata = (int*)malloc(sizeof(int)* slist->capacity);
@@ -104,7 +104,7 @@ void SL_SetAt(SepList* slist, int i, int x)
 void SL_Append(SepList* slist, int x)
 {
     if(slist->length == slist->capacity)//元素满了，需要先扩容
-        Inc(slist);
+        SL_resize(slist);
     slist->data[slist->length] = x;
     ++slist->length;
 }
@@ -233,7 +233,7 @@ void SL_Random_3(SepList* slist)
         {
             SL_InsertAt(slist, l, 0);
             if(slist->length == slist->capacity)//元素满了，需要先扩容
-                Inc(slist);
+                SL_resize(slist);
         }
     SL_output(slist);
 }
@@ -267,6 +267,8 @@ void main()
     // SL_Random_2(slist);                 //拓展（2）
     // SL_Random_3(slist);                 //拓展（3）
 }
+
+
 //测试结果
 // 请输入数据元素的个数：
 // 4
