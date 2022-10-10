@@ -73,7 +73,7 @@ void LL_Set(LinkList *llist, int index, T v)
 void LL_Insert(LinkList *llist, T x)
 {
     LinkNode *newNode = (LinkNode*)malloc(sizeof(LinkNode));
-    if (newNode == NULL) return;
+    if(newNode == NULL) return;
     newNode->data = x;
     newNode->next = llist->header.next;
     llist->header.next = newNode;
@@ -102,12 +102,12 @@ void LL_DeleteHead(LinkList *llist)
 void LL_DeleteValue(LinkList *llist, T v)
 {
     LinkNode *p = llist->header.next;
-    if (p == NULL) return; //空链表不能删除
-    if (p->data == v) {
+    if(p == NULL) return; //空链表不能删除
+    if(p->data == v) {
         LL_DeleteHead(llist);
     }
     while (p) {
-        if (p->next->data == v) {
+        if(p->next->data == v) {
         LL_DeleteAfter(llist, p);
         return;
         }
@@ -132,7 +132,7 @@ LinkNode *LL_Search(LinkList *llist,T x)
 //打印链表元素
 void LL_Output(LinkList *llist)
 {
-    LinkNode* p = llist->header.next;
+    LinkNode *p = llist->header.next;
     printf("header->");
     while (p) {
         printf("%d->", p->data);
@@ -140,9 +140,27 @@ void LL_Output(LinkList *llist)
     }
     printf("\n");
 }
+
+// 头插法创建链表
+LinkNode *createHead()
+{
+	//定义了三个指针类型的lnode head是头指针
+    LinkNode *head, *p, *q;
+    head = p = (LinkNode*)malloc(sizeof(LinkNode));
+    p->next = NULL;
+    for (int i = 0; i < 10; i++) {
+        q = (LinkNode*)malloc(sizeof(LinkNode));
+        q->data = i;
+        q->next = p->next;
+        p->next = q;
+    }
+    return head;
+}
+
 int main()
 {
     LinkList *llist = LL_Create();
-
+    llist = createHead();
+    LL_Output(llist);
     return 0;
 }
