@@ -1,5 +1,6 @@
 #include<stdio.h>
 #include<stdlib.h>
+#include <time.h>
 
 typedef int T;
 
@@ -88,31 +89,42 @@ void LL_Insert(LinkList_Head *llist, T x)
     llist->length++;
 }
 
-//TODO:在链表结点 p 后插入元素 x
+//在链表结点 p 后插入元素 x
 void LL_InsertAfter(LinkList_Head *llist, LinkNode *p, T x)
 {
-    int index = 0;
-    LinkNode *NewNode = (LinkNode*)malloc(sizeof(LinkNode));
     LinkNode *q = llist->header.next;
-    while (p->data != x)
-    {
-        p = p->next;
-        ++index;
-    }
-    
+    while (q != p)
+        q = q->next;
+    LinkNode *NewNode = (LinkNode*)malloc(sizeof(LinkNode));
+    NewNode->data = x;
+    NewNode->next = q->next;
+    q->next = NewNode;
     llist->length++;
 }
 
-//TODO:删除链表当中 p 结点之后的元素
+//删除链表当中 p 结点之后的元素
 void LL_DeleteAfter(LinkList_Head *llist, LinkNode *p)
 {
-
+    int index = 0;
+    LinkNode *q = llist->header.next;
+    LinkNode *t;
+    while (q != p) {
+        q = q->next;
+        index++;
+    }
+    t = q->next;
+    q->next = NULL;
+    free(t);
+    llist->length = index+1;
 }
 
-//TODO:删除链表表头元素
+//删除链表表头元素
 void LL_DeleteHead(LinkList_Head *llist)
 {
-
+    LinkNode *p = llist->header.next;
+    llist->header.next = p->next;
+    free(p);
+    llist->length--;
 }
 
 //删除链表 llist 中的元素 v
@@ -158,18 +170,24 @@ void LL_Output(LinkList_Head *llist)
     printf("\n");
 }
 
+//生成 100 个随机整数并放入一个链表中,
+//要求链表中的元素按从小到大顺序排列,然后
+//输出该链表。
+void random_input(LinkList_Head *llist)
+{
+    srand((int)time(NULL));
+    for(int i =0; i < 100; i++)
+    {
+        LL_Insert(llist, rand() % 100 + 1);
+    }
+}
 int main()
 {
     LinkList_Head *llist = LL_Create();
-    for(int i = 0; i < 10; i++)
-        LL_Insert(llist, i);
+    random_input(llist);
     LL_Output(llist);
-    LinkNode *p = llist->header.next;
-    for (int i = 0; i < 3; i++) {
-        p = p->next;
-    }
-    LL_InsertAfter(llist, p, 99999);
+    LL_DeleteHead(llist);
     LL_Output(llist);
-
+    printf("%d\n",llist->length);
     return 0;
 }
