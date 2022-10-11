@@ -1,7 +1,7 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include <time.h>
-#include<unistd.h>          //getpid函数的头文件。
+#include<unistd.h> 
 typedef int T;
 
 typedef struct LinkNode
@@ -173,11 +173,19 @@ void LL_Output(LinkList_Head *llist)
 //生成 100 个随机整数并放入一个链表中,
 //要求链表中的元素按从小到大顺序排列,然后
 //输出该链表。
-void random_input(LinkList_Head *llist)
+void random_input_1(LinkList_Head *llist)
 {
-    srand((int)time(NULL) + getpid());          //grtpid函数，功能是取得进程识别码，许多程序利用取到的此值来建立临时文件，以避免临时文件相同带来的问题。
+    srand((int)time(NULL));
     for(int i =0; i < 100; i++)
         LL_Insert(llist, rand() % 100 + 1);
+}
+void random_input_2(LinkList_Head *llist_1, LinkList_Head *llist_2)
+{
+    srand((int)time(NULL));
+    for(int i =0; i < 100; i++) {
+        LL_Insert(llist_1, rand() % 100 + 1);
+        LL_Insert(llist_2, rand() % 100 + 1);
+    }
 }
 
 //链表的冒泡排序
@@ -223,15 +231,25 @@ void two2one(LinkList_Head *llist_1, LinkList_Head *llist_2, LinkList_Head *llis
         b = b->next;
     }
     LL_Sort(llist_total);
+    LinkNode *p,*q;
+    p = llist_total->header.next;
+    while(p != NULL){
+        while(p->next != NULL && p->data == p->next->data){
+            q = p->next;
+            p->next = q->next;
+            free(q);
+        }
+        p = p->next;
+    }
 }
 int main()
 {
     LinkList_Head *llist_1 = LL_Create();
     LinkList_Head *llist_2 = LL_Create();
     LinkList_Head *llist_total = LL_Create();
-    random_input(llist_1);
-    random_input(llist_2);
+    random_input_2(llist_1, llist_2);
     LL_Sort(llist_1);
+    LL_Sort(llist_2);
     two2one(llist_1, llist_2, llist_total);
     LL_Output(llist_1);
     LL_Output(llist_2);
