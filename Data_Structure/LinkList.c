@@ -177,16 +177,44 @@ void random_input(LinkList_Head *llist)
 {
     srand((int)time(NULL));
     for(int i =0; i < 100; i++)
-    {
         LL_Insert(llist, rand() % 100 + 1);
+}
+
+//链表的冒泡排序
+void LL_Sort(LinkList_Head *llist)
+{
+    int temp = 0, count = 0;
+    LinkNode *t = llist->header.next;
+    LinkNode *p;
+    while (t)
+    {
+        count++;
+        t = t->next;
     }
+    for (int i = 0; i < count - 1; i++)
+    {
+        t = llist->header.next;
+        p = t->next;
+        for (int j = 0; j < count - i - 1; j++)
+        {
+            if (t->data > p->data)
+            {
+                temp = t->data;
+                t->data = p->data;
+                p->data = temp;
+            }
+            p = p->next;
+            t = t->next;
+        }
+        
+    }
+    
 }
 int main()
 {
     LinkList_Head *llist = LL_Create();
     random_input(llist);
-    LL_Output(llist);
-    LL_DeleteHead(llist);
+    LL_Sort(llist);
     LL_Output(llist);
     printf("%d\n",llist->length);
     return 0;
