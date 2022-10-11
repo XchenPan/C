@@ -1,7 +1,7 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include <time.h>
-
+#include<unistd.h>          //getpid函数的头文件。
 typedef int T;
 
 typedef struct LinkNode
@@ -175,7 +175,7 @@ void LL_Output(LinkList_Head *llist)
 //输出该链表。
 void random_input(LinkList_Head *llist)
 {
-    srand((int)time(NULL));
+    srand((int)time(NULL) + getpid());          //grtpid函数，功能是取得进程识别码，许多程序利用取到的此值来建立临时文件，以避免临时文件相同带来的问题。
     for(int i =0; i < 100; i++)
         LL_Insert(llist, rand() % 100 + 1);
 }
@@ -206,16 +206,35 @@ void LL_Sort(LinkList_Head *llist)
             p = p->next;
             t = t->next;
         }
-        
     }
-    
+}
+
+//将两个从小到大排列的链表合并为一个新链表(仍然有序排列),若遇到相同的元素,
+//则在合并时去掉重复元素。输出合并前的两个链表,输出合并后的链表,检查合并是否成功。
+void two2one(LinkList_Head *llist_1, LinkList_Head *llist_2, LinkList_Head *llist_total)
+{
+    LinkNode *a = llist_1->header.next;
+    LinkNode *b = llist_2->header.next;
+    while (a != NULL && b != NULL)
+    {
+        LL_Insert(llist_total, a->data);
+        LL_Insert(llist_total, b->data);
+        a = a->next;
+        b = b->next;
+    }
+    LL_Sort(llist_total);
 }
 int main()
 {
-    LinkList_Head *llist = LL_Create();
-    random_input(llist);
-    LL_Sort(llist);
-    LL_Output(llist);
-    printf("%d\n",llist->length);
+    LinkList_Head *llist_1 = LL_Create();
+    LinkList_Head *llist_2 = LL_Create();
+    LinkList_Head *llist_total = LL_Create();
+    random_input(llist_1);
+    random_input(llist_2);
+    LL_Sort(llist_1);
+    two2one(llist_1, llist_2, llist_total);
+    LL_Output(llist_1);
+    LL_Output(llist_2);
+    LL_Output(llist_total);
     return 0;
 }
