@@ -1,6 +1,6 @@
 #include<stdio.h>
 #include<stdlib.h>
-#define MaxSize 100
+#define MaxSize 2
 typedef int T;
 
 struct SepStack
@@ -15,16 +15,28 @@ struct SepStack *SS_Create(int size) {
     struct SepStack *sstack = (struct SepStack*)malloc(sizeof(struct SepStack));
     sstack->data = (T*)malloc(size*sizeof(T));
     sstack->top = 0;
+    sstack->capacity = size;
     return sstack;
 }
 void Push(struct SepStack *sstack, T v) {
     //将数据v存入栈顶位置；
+    if (sstack->top == sstack->capacity) {
+        printf("栈空间已满，不能PUSH\n");
+        return;
+    }
+    sstack->data[sstack->top] = v;
+    sstack->top++;
 }
 T Pop(struct SepStack *sstack) {
     //删除并返回当前栈顶元素；
+    int t = sstack->data[sstack->top];
+    sstack->top--;
+    return t;
 }
 T Peek(struct SepStack *sstack) {
     //读取当前栈顶元素；
+    int t = sstack->data[sstack->top - 1];
+    return t;
 }
 void Output(struct SepStack *sstack) {
     //按照栈底到栈顶顺序打印输出栈空间中当前元素；
@@ -39,4 +51,10 @@ void Output(struct SepStack *sstack) {
 void main()
 {
     struct SepStack *sstack = SS_Create(MaxSize);
+    Push(sstack, 11);
+    Push(sstack, 11);
+    Push(sstack, 11);
+    Output(sstack);
+    printf("%d\n",sstack->top);
+    printf("%d\n", Peek(sstack));
 }
