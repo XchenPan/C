@@ -1,6 +1,5 @@
 #include<stdio.h>
 #include<stdlib.h>
-#include<sepstack.h>
 #define MaxSize 2
 typedef int T;
 
@@ -48,14 +47,4 @@ void Output(struct SepStack *sstack) {
         i++;
     }
     printf("\n");
-}
-void main()
-{
-    struct SepStack *sstack = SS_Create(MaxSize);
-    Push(sstack, 11);
-    Push(sstack, 11);
-    Push(sstack, 11);
-    Output(sstack);
-    printf("%d\n",sstack->top);
-    printf("%d\n", Peek(sstack));
 }
