@@ -1,7 +1,8 @@
 #include<stdio.h>
 #include<stdlib.h>
-#include<sepstack.h>
-#define MaxSize 2
+
+#define MaxSize 5
+
 typedef int T;
 
 struct SepStack
@@ -30,7 +31,7 @@ void Push(struct SepStack *sstack, T v) {
 }
 T Pop(struct SepStack *sstack) {
     //删除并返回当前栈顶元素；
-    int t = sstack->data[sstack->top];
+    int t = sstack->data[sstack->top - 1];
     sstack->top--;
     return t;
 }
@@ -52,10 +53,16 @@ void Output(struct SepStack *sstack) {
 void main()
 {
     struct SepStack *sstack = SS_Create(MaxSize);
-    Push(sstack, 11);
-    Push(sstack, 11);
-    Push(sstack, 11);
+    Push(sstack, 56);
+    Push(sstack, 77);
+    Push(sstack, 15);
+    Push(sstack, 12);
+    Push(sstack, 8);
     Output(sstack);
-    printf("%d\n",sstack->top);
-    printf("%d\n", Peek(sstack));
+    Push(sstack, 444);
+
+    printf("取出当前栈顶元素为：%d\n",Pop(sstack));
+    printf("读到当前栈顶元素为：%d\n",Peek(sstack));
+
+    Output(sstack);
 }
