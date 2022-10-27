@@ -1,6 +1,6 @@
 #include<stdio.h>
 #include<stdlib.h>
-#define MaxSize 100
+#define MaxSize 5
 typedef int T;
 
 struct Queue
@@ -15,7 +15,7 @@ struct Queue *InitQueue(int size)
     struct Queue *q = (struct Queue*)malloc(sizeof(struct Queue));
     q->Data = (int*)malloc(sizeof(int)*size);
     q->head = q->tail;
-    q->capacity = size;
+    q->capacity = size + 1;
     return q;
 }
 int IsEmpty(struct Queue *q)
@@ -27,6 +27,7 @@ int IsEmpty(struct Queue *q)
 }
 void enQueue(struct Queue *q, T v)
 {   //入队
+    if (q->tail == q->capacity - 1) return;
 	q->Data[q->tail] = v;
 	q->tail = (q->tail + 1) % q->capacity;
 }
@@ -45,15 +46,13 @@ void OutputQueue(struct Queue *q)
 	}
 	printf("\n");
 }
-int main()
+void main()
 {
     struct Queue *q = InitQueue(MaxSize);
     enQueue(q,1);
     enQueue(q,2);
     enQueue(q,3);
     enQueue(q,4);
+    enQueue(q,5);
     OutputQueue(q);
-    deQueue(q);
-    OutputQueue(q);
-    return 0;
 }
