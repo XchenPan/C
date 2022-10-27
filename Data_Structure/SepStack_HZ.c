@@ -16,7 +16,7 @@ int caculate(int v1, int v2, char opt) {
 }
 int evaluate(char* expression) {
     //求后缀表达式expression的值，expression以'\0'结尾
-    struct SepStack *value  = SS_Create(100);
+    struct SepStack *value  = SS_Create(100);//这里需要添加一個遍历
     char ch;
     char m, n, result;
     int i = 0;
@@ -37,23 +37,30 @@ int evaluate(char* expression) {
     }
     return Pop(value);
 }
+char *ZH2HZ(char *expression) {
+    //实现将中缀转为后缀，然后存在数组中并返回
+    int i = 0, n = 0;
+    while (expression[i])
+        expression[i++];
+}
 void main()
 {
-    // struct SepStack *sstack = SS_Create(MaxSize);
-    // Push(sstack, 56);
-    // Push(sstack, 77);
-    // Push(sstack, 15);
-    // Push(sstack, 12);
-    // Push(sstack, 8);
-    // Output(sstack);
-    // Push(sstack, 444);
-    // // printf("取出当前栈顶元素为：%d\n",Pop(sstack));
-    // // printf("读到当前栈顶元素为：%d\n",Peek(sstack));
+    struct SepStack *sstack = SS_Create(MaxSize);
+    Push(sstack, 56);
+    Push(sstack, 77);
+    Push(sstack, 15);
+    Push(sstack, 12);
+    Push(sstack, 8);
+    Output(sstack);
+    Push(sstack, 444);
+    printf("取出当前栈顶元素为：%d\n",Pop(sstack));
+    printf("读到当前栈顶元素为：%d\n",Peek(sstack));
 
-    // Output(sstack);
+    Output(sstack);
 
     char expr1[] = "34-5+#";
     char expr2[] = "645/26*+-#";
-    char expr3[] = "322*23*+-#";
+    printf("%d\n", evaluate(expr1)); 
     printf("%d\n", evaluate(expr2)); 
+    ZH2HZ(expr1);
 }
