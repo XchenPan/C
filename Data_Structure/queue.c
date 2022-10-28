@@ -15,7 +15,7 @@ struct Queue *InitQueue(int size)
     struct Queue *q = (struct Queue*)malloc(sizeof(struct Queue));
     q->Data = (int*)malloc(sizeof(int)*size);
     q->head = q->tail;
-    q->capacity = size + 1;
+    q->capacity = size;
     return q;
 }
 int IsEmpty(struct Queue *q)
@@ -27,7 +27,7 @@ int IsEmpty(struct Queue *q)
 }
 void enQueue(struct Queue *q, T v)
 {   //入队
-    if (q->tail == q->capacity - 1) return;
+    if ((q->tail + 1) % q->capacity == q->head) return;
 	q->Data[q->tail] = v;
 	q->tail = (q->tail + 1) % q->capacity;
 }
@@ -53,6 +53,6 @@ void main()
     enQueue(q,2);
     enQueue(q,3);
     enQueue(q,4);
-    enQueue(q,5);
     OutputQueue(q);
+    printf("%d\n",q->capacity);
 }
