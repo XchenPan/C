@@ -1,6 +1,7 @@
 #include<stdio.h>
 #include<string.h>
 #include<stdlib.h>
+#include<time.h>
 
 typedef struct 
 {
@@ -80,14 +81,20 @@ int KMP_Index(SString *S, SString *T, int next[], int pos)
 }
 void main()
 {
+    SString *S = CreateString(100);
+    SString *T = CreateString(20);
+    InsertString(S, "000000000000000000000000000000000000000000000000011223344555");
+    InsertString(T, "0045");
     int next[100];
-    SString *S = CreateString(20);
-    SString *T = CreateString(5);
-    InsertString(S, "11223344555");
-    InsertString(T, "34450");
-    int bf_t = BF_Index(S, T, 0);
     GetNext(T, next);
-    int kmp_t = KMP_Index(S, T, next, 0);
-    printf("%d\n",bf_t);
-    printf("%d\n",kmp_t);
+    int s = -1;
+    time_t tBegin, tEnd;
+    time(&tBegin);
+    for (int i = 0; i < 100000000; i++) {
+        // s = KMP_Index(S, T, next, 0);
+        s = BF_Index(S, T, 0);
+    }
+    time(&tEnd);
+    printf("本次搜索耗时：%d\n", tEnd - tBegin);
+    printf("主串中找到模式串位置为（从1开始）：%d\n", s);
 }
