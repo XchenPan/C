@@ -47,20 +47,47 @@ int BF_Index(SString *S, SString *T, int pos)
     else
         return -1;
 }
-void GetNext (const SString *T, int next[])
+void GetNext(const SString *T, int next[])
 {
+    int i = 0, j = -1;
+    next[0] = -1;
+    while (i < T->length) {
+        if (j == -1|| T->ch[i] == T->ch[j]) {
+            ++i;
+            ++j;
+            next[i] = j;
+        }
+        else
+            j = next[j];
+    }
 }
-int KMP_Index(SString *S, SString *T, int pos)
+int KMP_Index(SString *S, SString *T, int next[], int pos)
 {
-
+    int i = pos;
+    int j = 0;
+    while (i < S->length && j < T->length) {
+        if (j == -1|| S->ch[i] == T->ch[j]) {
+            ++i;
+            ++j;
+        }
+        else
+            j = next[j];
+    }
+    if (j == T->length)
+        return i - T->length + 1;
+    else
+        return -1;
 }
 void main()
 {
     int next[100];
     SString *S = CreateString(20);
     SString *T = CreateString(5);
-    InsertString(S, "1234");
-    InsertString(T, "34");
-    int t = BF_Index(S, T, 0);
-    printf("%d\n",t);
+    InsertString(S, "11223344555");
+    InsertString(T, "34450");
+    int bf_t = BF_Index(S, T, 0);
+    GetNext(T, next);
+    int kmp_t = KMP_Index(S, T, next, 0);
+    printf("%d\n",bf_t);
+    printf("%d\n",kmp_t);
 }
