@@ -84,7 +84,7 @@ void main()
 {
     SString *S = CreateString(100);
     SString *T = CreateString(20);
-    InsertString(S, "0000000000000000000000000000000000000000000000000000000000001122334004555");
+    InsertString(S, "000000000000000000001122334004555");
     InsertString(T, "0045");
     int next[100];
     GetNext(T, next);
@@ -92,7 +92,7 @@ void main()
 
     time_t tBegin, tEnd;
     time(&tBegin);
-    for (int i = 0; i < 10000000; i++) {
+    for (int i = 0; i < 100000000; i++) {
         s = KMP_Index(S, T, next, 0);
         // s = BF_Index(S, T, 0);
     }
@@ -101,7 +101,7 @@ void main()
 
     struct timeval gtod_start, gtod_end;
     gettimeofday(&gtod_start, NULL);
-    for (int i = 0; i < 10000000; i++) {
+    for (int i = 0; i < 100000000; i++) {
         s = KMP_Index(S, T, next, 0);
         // s = BF_Index(S, T, 0);
     }
@@ -111,12 +111,12 @@ void main()
 
     clock_t clk_start, clk_end;
     clk_start = clock();
-    for (int i = 0; i < 10000000; i++) {
+    for (int i = 0; i < 100000000; i++) {
         s = KMP_Index(S, T, next, 0);
         // s = BF_Index(S, T, 0);
     }
     clk_end = clock();
     printf("本次搜索耗时：%f\n",(double)(clk_end-clk_start) / CLOCKS_PER_SEC);
-
-    printf("主串中找到模式串位置为（从1开始）：%d\n", s);
+    // printf("主串中找到模式串位置为_BF（从1开始）：%d\n", s);
+    printf("主串中找到模式串位置为_KMP（从1开始）：%d\n", s);
 }

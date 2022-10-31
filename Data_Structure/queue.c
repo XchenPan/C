@@ -19,15 +19,20 @@ struct Queue *InitQueue(int size)
     return q;
 }
 int IsEmpty(struct Queue *q)
-{   //判空, 空返回1,非空返回0;
+{   //判断队列的状态
     if (q->head == q->tail)
-        return 1;
+        printf("队列为空\n");
+    else if ((q->tail + 1) % q->capacity == q->head)
+        printf("队列已满\n");
     else
-        return 0;
+        printf("队列非空\n");
 }
 void enQueue(struct Queue *q, T v)
 {   //入队
-    if ((q->tail + 1) % q->capacity == q->head) return;
+    if ((q->tail + 1) % q->capacity == q->head) {
+        printf("队列已满，不能再入队\n");
+        return;
+    }
 	q->Data[q->tail] = v;
 	q->tail = (q->tail + 1) % q->capacity;
 }
@@ -53,6 +58,24 @@ void main()
     enQueue(q,2);
     enQueue(q,3);
     enQueue(q,4);
+        printf("原始队列为（队列已满）：");
     OutputQueue(q);
-    printf("%d\n",q->capacity);
+
+    deQueue(q);
+    printf("出队1次队列为：");
+    OutputQueue(q);
+    deQueue(q);
+    printf("出队2次队列为：");
+    OutputQueue(q);
+    deQueue(q);
+    printf("出队3次队列为：");
+    OutputQueue(q);
+    deQueue(q);
+    printf("出队4次队列为：");
+    OutputQueue(q);
+    IsEmpty(q);
+    deQueue(q);
+    printf("出队超出队列容量后的队列为：");
+    OutputQueue(q);
+    IsEmpty(q);
 }
