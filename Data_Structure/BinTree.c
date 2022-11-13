@@ -1,5 +1,6 @@
 #include<stdio.h>
 #include<stdlib.h>
+
 int i = 0;
 
 typedef char T;
@@ -18,10 +19,6 @@ struct BinTree *create(T ch)
     node->lchild = node->rchild = NULL;
 
     return node;
-}
-char GetNext(char *p) 
-{
-
 }
 struct BinTree *createByPre(char *p)
 {
@@ -61,7 +58,7 @@ void postOrder(struct BinTree *T)
     }
 }
 static struct BinTree *rebuildByPreIn(char *pre, char *in, int len)
-{
+{   //根据先序遍历和中序遍历重构二叉树
     if(len == 0) return NULL;
     char root = pre[0];
     struct BinTree *bt = create(root);
@@ -76,15 +73,31 @@ static struct BinTree *rebuildByPreIn(char *pre, char *in, int len)
 
     return bt;
 }
+static struct BinTree *rebuildByInPost(char *in, char *post, int len)
+{   //根据中序遍历和后序遍历重构二叉树
+    if(len == 0) return NULL;
+    
+}
+void SetIndex()
+{
+    i = 0;
+}
 int main()
 {
     struct BinTree *tree;
-    char str[] = "AB##CDF###E##";
-    tree = createByPre(str);
+    char *p = "AB##CDF###E##";
+    tree = createByPre(p);
     preOrder(tree);
     printf("\n");
     inOrder(tree);
     printf("\n");
     postOrder(tree);
+    printf("\n");
+    SetIndex();
+    char *pre = "abdgcefh";
+    char *in = "dgbaechf";
+    struct BinTree *T = rebuildByPreIn(pre, in, 8);
+    postOrder(T);
+    printf("\n");
     return 0;
 }
