@@ -14,6 +14,7 @@ SString *CreateString(int length)
 {
     SString *ss = (SString*)malloc(sizeof(SString));
     ss->ch = (char*)malloc(sizeof(char)*length);
+    ss->length = 0;
     return ss;
 }
 void InsertString(SString *ss, char insert_ss[])
@@ -84,7 +85,7 @@ void main()
 {
     SString *S = CreateString(100);
     SString *T = CreateString(20);
-    InsertString(S, "000000000000000000001122334004555");
+    InsertString(S, "0000000000000000000000000000000000000000000000000000000000000001122334004555");
     InsertString(T, "0045");
     int next[100];
     GetNext(T, next);
@@ -92,7 +93,7 @@ void main()
 
     time_t tBegin, tEnd;
     time(&tBegin);
-    for (int i = 0; i < 100000000; i++) {
+    for (int i = 0; i < 10000000; i++) {
         s = KMP_Index(S, T, next, 0);
         // s = BF_Index(S, T, 0);
     }
@@ -101,7 +102,7 @@ void main()
 
     struct timeval gtod_start, gtod_end;
     gettimeofday(&gtod_start, NULL);
-    for (int i = 0; i < 100000000; i++) {
+    for (int i = 0; i < 10000000; i++) {
         s = KMP_Index(S, T, next, 0);
         // s = BF_Index(S, T, 0);
     }
@@ -111,9 +112,9 @@ void main()
 
     clock_t clk_start, clk_end;
     clk_start = clock();
-    for (int i = 0; i < 100000000; i++) {
-        s = KMP_Index(S, T, next, 0);
-        // s = BF_Index(S, T, 0);
+    for (int i = 0; i < 10000000; i++) {
+        // s = KMP_Index(S, T, next, 0);
+        s = BF_Index(S, T, 0);
     }
     clk_end = clock();
     printf("本次搜索耗时：%f\n",(double)(clk_end-clk_start) / CLOCKS_PER_SEC);
