@@ -1,5 +1,6 @@
 #include<stdio.h>
 #include<stdlib.h>
+int i = 0;
 
 typedef char T;
 
@@ -18,14 +19,18 @@ struct BinTree *create(T ch)
 
     return node;
 }
-struct BinTree *createByPre(char *str, int &index)
+char GetNext(char *p) 
 {
-    char ch = str[index];
-    index++;
-    if(ch == '#') return NULL;
+
+}
+struct BinTree *createByPre(char *p)
+{
+    char ch = p[i++];
+    if (ch == '#') return NULL;
     struct BinTree *bt = create(ch);
-    bt->lchild = createByPre(str, index);
-    bt->rchild = createByPre(str, index);
+    bt->lchild = createByPre(p);
+    bt->rchild = createByPre(p);
+
     return bt;
 }
 void preOrder(struct BinTree *T)
@@ -55,13 +60,31 @@ void postOrder(struct BinTree *T)
         printf("%c->", T->data);
     }
 }
+static struct BinTree *rebuildByPreIn(char *pre, char *in, int len)
+{
+    if(len == 0) return NULL;
+    char root = pre[0];
+    struct BinTree *bt = create(root);
+    int pos = 0;
+    while (pos < len) {
+        if (in[pos] == root) break;
+        pos++;
+    }
+    bt->lchild = rebuildByPreIn(pre + 1, in, pos);
+    pos++;
+    bt->rchild = rebuildByPreIn(pre + pos, in + pos, len - pos);
+
+    return bt;
+}
 int main()
 {
     struct BinTree *tree;
     char str[] = "AB##CDF###E##";
-    int index = 0;
-    tree = createByPre(str, index);
+    tree = createByPre(str);
+    preOrder(tree);
+    printf("\n");
+    inOrder(tree);
+    printf("\n");
     postOrder(tree);
-
     return 0;
 }
