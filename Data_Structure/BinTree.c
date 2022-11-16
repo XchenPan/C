@@ -1,7 +1,9 @@
 #include<stdio.h>
 #include<stdlib.h>
 
-int i = 0;
+static int i = 0;
+static int sum = 0;
+static char Max = 0;
 
 typedef char T;
 
@@ -85,9 +87,38 @@ static struct BinTree *rebuildByInPost(char *in, char *post, int len)
 
     return bt;
 }
+int count(struct BinTree *T)
+{
+    if (T)
+    {
+        count(T->lchild);
+        count(T->rchild);
+        sum++;
+    }
+    return sum;
+}
+char FindMax(struct BinTree *T)
+{
+    if (T)
+    {
+        if (T->data >= Max)
+            Max = T->data;
+        FindMax(T->lchild);
+        FindMax(T->rchild);
+    }
+    return Max;
+}
 void SetIndex()
 {
     i = 0;
+}
+void SetSum()
+{
+    sum = 0;
+}
+void SetMax()
+{
+    Max = 0;
 }
 int main()
 {
@@ -110,5 +141,10 @@ int main()
     struct BinTree *T2 = rebuildByInPost(in, post, 8);
     preOrder(T2);
     printf("\n");
+    printf("%d\n",count(tree));
+    SetSum();
+    char t = FindMax(tree);
+    printf("%c\n", t);
+    SetMax();
     return 0;
 }
