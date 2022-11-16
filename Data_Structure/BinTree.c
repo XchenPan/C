@@ -125,6 +125,7 @@ int main()
     struct BinTree *tree;
     char *p = "AB##CDF###E##";
     tree = createByPre(p);
+    printf("二叉树的先序/中序/后序遍历为：\n");
     preOrder(tree);
     printf("\n");
     inOrder(tree);
@@ -136,15 +137,17 @@ int main()
     char *in = "dgbaechf";
     char *post = "gdbehfca";
     struct BinTree *T1 = rebuildByPreIn(pre, in, 8);
+    printf("根据先序遍历和中序遍历重构二叉树的后序遍历为：\n");
     postOrder(T1);
     printf("\n");
     struct BinTree *T2 = rebuildByInPost(in, post, 8);
+    printf("根据中序遍历和后序遍历重构二叉树的先序遍历为：\n");
     preOrder(T2);
     printf("\n");
-    printf("%d\n",count(tree));
+    printf("结点总个数为：%d\n",count(T1));
     SetSum();
-    char t = FindMax(tree);
-    printf("%c\n", t);
+    printf("结点最大值为：%c\n", FindMax(tree));
     SetMax();
+
     return 0;
 }
