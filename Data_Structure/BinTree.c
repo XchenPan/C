@@ -76,7 +76,14 @@ static struct BinTree *rebuildByPreIn(char *pre, char *in, int len)
 static struct BinTree *rebuildByInPost(char *in, char *post, int len)
 {   //根据中序遍历和后序遍历重构二叉树
     if(len == 0) return NULL;
-    
+    char root = post[len - 1];
+    struct BinTree *bt = create(root);
+    int pos = 0;
+    while (in[pos] != root) pos++; 
+    bt->lchild = rebuildByInPost(in, post, pos);
+    bt->rchild = rebuildByInPost(in + pos + 1, post + pos, len - pos -1);
+
+    return bt;
 }
 void SetIndex()
 {
@@ -96,8 +103,12 @@ int main()
     SetIndex();
     char *pre = "abdgcefh";
     char *in = "dgbaechf";
-    struct BinTree *T = rebuildByPreIn(pre, in, 8);
-    postOrder(T);
+    char *post = "gdbehfca";
+    struct BinTree *T1 = rebuildByPreIn(pre, in, 8);
+    postOrder(T1);
+    printf("\n");
+    struct BinTree *T2 = rebuildByInPost(in, post, 8);
+    preOrder(T2);
     printf("\n");
     return 0;
 }
