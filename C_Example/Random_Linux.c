@@ -1,17 +1,16 @@
-#include <stdio.h>
-#include <string.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <sys/file.h>
-#include <sys/time.h>
-#include <errno.h>
-#include <unistd.h>
-#include <stdlib.h>
-#include<time.h>
+#include<stdio.h>
+#include<string.h>
+#include<sys/types.h>
+#include<sys/stat.h>
+#include<sys/file.h>
+#include<sys/time.h>
+#include<errno.h>
+#include<unistd.h>
+#include<stdlib.h>
 
-char true_random()
+int true_random()
 {
-    char random_num, fd, nread;
+    int random_num, fd, nread;
     fd = open("/dev/random", O_RDONLY);
     if(fd < -1)
         return -1;
@@ -19,19 +18,13 @@ char true_random()
     if(nread < 0)
         return -1;
     close(fd);
-    if(random_num < 0)
-        random_num = -random_num;
     return random_num;
 }
-void main()
+int main(void)
 {
-    int m, n;
-    srand((unsigned int)time(NULL));
-    n = true_random();
-    for(int i = 0; i < 5; i++){
-        n = true_random();
-        printf("n = %d %c\n",n,(char)n);
-    }
-    printf("%d\n", m = rand()%101+100);
-    //printf("n = %d %c\n",n,(char)n);
+    int m;
+    m = true_random();
+    printf("m = %d \n", m);
+
+    return 0;
 }
