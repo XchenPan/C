@@ -9,7 +9,7 @@
                 "-g",
                 "${file}",
                 "-o",
-                "${fileDirname}/${fileBasenameNoExtension}"
+                "/home/bapie/Desktop/C/build/Debug/outDebug/${fileBasenameNoExtension}"
             ],
             "options": {
                 "cwd": "${fileDirname}"
