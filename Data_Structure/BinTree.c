@@ -1,10 +1,6 @@
 #include<stdio.h>
 #include<stdlib.h>
 
-static int i = 0;
-static int sum = 0;
-static char Max = 0;
-
 typedef char T;
 
 struct BinTree
@@ -13,7 +9,6 @@ struct BinTree
     struct BinTree *lchild;
     struct BinTree *rchild;
 };
-
 struct BinTree *create(T ch)
 {
     struct BinTree *node = (struct BinTree*)malloc(sizeof(struct BinTree));
@@ -22,41 +17,41 @@ struct BinTree *create(T ch)
 
     return node;
 }
-struct BinTree *createByPre(char *p)
+struct BinTree *createByPre(char *p, int *i)
 {
-    char ch = p[i++];
+    char ch = p[(*i)++];
     if (ch == '#') return NULL;
     struct BinTree *bt = create(ch);
-    bt->lchild = createByPre(p);
-    bt->rchild = createByPre(p);
+    bt->lchild = createByPre(p, i);
+    bt->rchild = createByPre(p, i);
 
     return bt;
 }
-void preOrder(struct BinTree *T)
+void preOrder(struct BinTree *bt)
 {
-    if (T)
+    if (bt)
     {
-        printf("%c->", T->data);
-        preOrder(T->lchild);
-        preOrder(T->rchild);
+        printf("%c->", bt->data);
+        preOrder(bt->lchild);
+        preOrder(bt->rchild);
     }
 }
-void inOrder(struct BinTree *T)
+void inOrder(struct BinTree *bt)
 {
-    if (T)
+    if (bt)
     {
-        inOrder(T->lchild);
-        printf("%c->", T->data);
-        inOrder(T->rchild);
+        inOrder(bt->lchild);
+        printf("%c->", bt->data);
+        inOrder(bt->rchild);
     }
 }
-void postOrder(struct BinTree *T)
+void postOrder(struct BinTree *bt)
 {
-    if (T)
+    if (bt)
     {
-        postOrder(T->lchild);
-        postOrder(T->rchild);
-        printf("%c->", T->data);
+        postOrder(bt->lchild);
+        postOrder(bt->rchild);
+        printf("%c->", bt->data);
     }
 }
 static struct BinTree *rebuildByPreIn(char *pre, char *in, int len)
@@ -87,44 +82,33 @@ static struct BinTree *rebuildByInPost(char *in, char *post, int len)
 
     return bt;
 }
-int count(struct BinTree *T)
+int count(struct BinTree *bt, int *sum)
 {
-    if (T)
+    if (bt)
     {
-        count(T->lchild);
-        count(T->rchild);
-        sum++;
+        count(bt->lchild, sum);
+        count(bt->rchild, sum);
+        (*sum)++;
     }
-    return sum;
+    return *sum;
 }
-char FindMax(struct BinTree *T)
+char FindMax(struct BinTree *bt, T *max)
 {
-    if (T)
+    if (bt)
     {
-        if (T->data >= Max)
-            Max = T->data;
-        FindMax(T->lchild);
-        FindMax(T->rchild);
+        if (bt->data >= *max)
+            *max = bt->data;
+        FindMax(bt->lchild, max);
+        FindMax(bt->rchild, max);
     }
-    return Max;
-}
-void SetIndex()
-{
-    i = 0;
-}
-void SetSum()
-{
-    sum = 0;
-}
-void SetMax()
-{
-    Max = 0;
+    return *max;
 }
 int main()
 {
     struct BinTree *tree;
     char *p = "AB##CDF###E##";
-    tree = createByPre(p);
+    int i = 0;
+    tree = createByPre(p, &i);
     printf("二叉树的先序/中序/后序遍历为：\n");
     preOrder(tree);
     printf("\n");
@@ -132,7 +116,6 @@ int main()
     printf("\n");
     postOrder(tree);
     printf("\n");
-    SetIndex();
     char *pre = "abdgcefh";
     char *in = "dgbaechf";
     char *post = "gdbehfca";
@@ -144,10 +127,11 @@ int main()
     printf("根据中序遍历和后序遍历重构二叉树的先序遍历为：\n");
     preOrder(T2);
     printf("\n");
-    printf("结点总个数为：%d\n",count(T1));
-    SetSum();
-    printf("结点最大值为：%c\n", FindMax(tree));
-    SetMax();
+    int sum = 0;
+    printf("结点总个数为：%d\n", count(T2, &sum));
+    T max = '0';
+    printf("结点最大值为：%c\n", FindMax(tree, &max));
+    
 
     return 0;
 }
